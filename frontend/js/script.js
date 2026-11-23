@@ -443,7 +443,7 @@ compressBtn.addEventListener("click", async () => {
 
         // Send the image to the FastAPI backend
         const response = await fetch(
-            "http://127.0.0.1:8000/api/process",
+           "https://svd-web.onrender.com/api/process",
             {
                 method: "POST",
                 body: formData
