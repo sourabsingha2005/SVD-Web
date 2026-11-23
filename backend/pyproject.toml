@@ -1,0 +1,24 @@
+
+[project]
+name = "image-compression-lab"
+version = "0.1.0"
+description = "Web-based image compression and reconstruction using Singular Value Decomposition (SVD)"
+readme = "README.md"
+authors = [
+    { name = "TheDelusionalCreator", email = "256846986+TheDelusionalCreator01@users.noreply.github.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi[standard]>=0.165.0",
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "Pillow>=10.0",
+    "scikit-image>=0.22",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+package = false

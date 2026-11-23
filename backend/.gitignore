@@ -1,0 +1,26 @@
+# Python-generated files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Build and distribution files
+build/
+dist/
+wheels/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE and editor files
+.vscode/
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Operating system files
+.DS_Store
+Thumbs.db

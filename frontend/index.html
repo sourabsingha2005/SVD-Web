@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SVD Studio</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">S</div>
+                <span>SVD Studio</span>
+            </div>
+
+            <p class="nav-label">WORKSPACE</p>
+
+            <nav class="nav-menu">
+
+                <button class="nav-item active" data-page="dashboard">
+                    <span>Dashboard</span>
+                </button>
+
+                <button class="nav-item" data-page="compression">
+                    <span>Image Compression</span>
+                </button>
+
+                <button class="nav-item" data-page="analysis">
+                    <span>Analysis</span>
+                </button>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="engine-status">
+                    <span class="status-dot"></span>
+                    <div>
+                        <strong>System Status</strong>
+                        <p>Frontend initialized</p>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div>
+                    <p class="breadcrumb">Workspace / Dashboard</p>
+                    <h2>Dashboard</h2>
+                </div>
+
+                <div class="topbar-right">
+                    <span class="status-badge">
+                        <span class="status-dot"></span>
+                        System Ready
+                    </span>
+                </div>
+            </header>
+
+
+            <!-- Dashboard Content -->
+            <section class="page active" id="dashboard">
+
+                <div class="welcome-section">
+                    <h1>Image Compression Workspace</h1>
+
+                    <p>
+                        Explore image compression and reconstruction
+                        using Singular Value Decomposition.
+                    </p>
+                </div>
+
+            </section>
+
+            <section class="page" id="compression">
+
+                <div class="page-header">
+                    <h1>Image Compression</h1>
+                    <p>Compress images using Singular Value Decomposition.</p>
+                </div>
+
+                <div class="upload-container">
+
+                    <div class="upload-box" id="uploadBox">
+
+                        <div class="upload-icon">📁</div>
+
+                        <h2>Upload an Image</h2>
+
+                        <p>Drag and drop your image here or browse your files</p>
+
+                        <input type="file" id="imageInput" accept="image/*" hidden>
+
+                        <button class="upload-btn" id="uploadBtn">
+                            Browse Files
+                        </button>
+
+                        <p class="file-info">Supported formats: JPG, PNG, JPEG, WEBP</p>
+
+                    </div>
+
+                </div>
+
+                <div class="preview-container" id="previewContainer">
+
+                    <h2>Image Preview</h2>
+
+                    <img id="imagePreview" src="" alt="Uploaded image preview">
+
+                    <div id="imageDetails"></div>
+                    <div class="image-actions">
+
+                        <button class="replace-btn" id="replaceImageBtn">
+                            Replace Image
+                        </button>
+
+                        <button class="remove-btn" id="removeImageBtn">
+                            Remove Image
+                        </button>
+
+                    </div>
+
+                </div>
+
+                    <!-- Compression Controls -->
+
+                <div class="compression-controls" id="compressionControls">
+
+                    <div class="control-header">
+                        <div>
+                            <h2>Compression Settings</h2>
+                            <p>Adjust the rank to control the reconstruction quality.</p>
+                        </div>
+                    </div>
+
+                    <div class="rank-display">
+                        <span>Selected Rank (k)</span>
+                        <span id="rankValue">50</span>
+                    </div>
+
+                    <input
+                        type="range"
+                        id="rankSlider"
+                        min="1"
+                        max="100"
+                        value="50"
+                    >
+
+                    <div class="slider-labels">
+                        <span>1 · Higher Compression</span>
+                        <span>100 · More Detail</span>
+                    </div>
+
+                    <div class="rank-description" id="rankDescription">
+                        Select a rank to control how much information is retained.
+                    </div>
+
+                </div>
+
+                <div class="compress-action">
+                    <button id="compressBtn" class="compress-btn" disabled>
+                        Compress Image
+                    </button>
+                    <p id="compressMessage">
+                        Upload an image to get started.
+                    </p>
+                </div>
+
+                <div class="results-section" id="resultsSection">
+
+                    <div class="results-header">
+                        <h2>Compression Results</h2>
+                        <p>Performance and quality metrics of your compressed image.</p>
+                    </div>
+
+                    <div class="metrics-grid">
+
+                        <div class="metric-card">
+                            <h3>SNR</h3>
+                            <p class="metric-value" id="mseValue">--</p>
+                            <span>Signal-to-Noise Ratio</span>
+                        </div>
+
+                        <div class="metric-card">
+                            <h3>PSNR</h3>
+                            <p class="metric-value" id="psnrValue">--</p>
+                            <span>Peak Signal-to-Noise Ratio</span>
+                        </div>
+
+                        <div class="metric-card">
+                            <h3>Compression Ratio</h3>
+                            <p class="metric-value" id="ratioValue">--</p>
+                            <span>Original vs Compressed</span>
+                        </div>
+
+                        <div class="metric-card">
+                            <h3>Storage Saved</h3>
+                            <p class="metric-value" id="storageValue">--</p>
+                            <span>Space reduced</span>
+                        </div>
+
+                    </div>
+
+                    <div class="result-image-card">
+                        <h3>Reconstructed Image Result</h3>
+                        <div class="result-image-wrapper">
+                            <img id="resultImage" src="" alt="Compressed reconstruction">
+                            <p id="resultPlaceholder">
+                                Your reconstructed image will appear here after compression.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="download-container" id="downloadContainer">
+
+                        <button id="downloadBtn" disabled>
+                            Download Reconstructed Image
+                        </button>
+
+                        <p id="downloadMessage">
+                            Compress an image to enable downloading.
+                        </p>
+
+                    </div>
+
+                    <div class="difference-card">
+
+                        <div class="difference-header">
+                            <h3>Image Difference</h3>
+                            <p>Visualize the information lost during reconstruction.</p>
+                        </div>
+
+                        <div class="difference-image-wrapper">
+
+                            <img id="differenceImage" src="" alt="Difference between original and reconstructed image">
+
+                            <p id="differencePlaceholder">
+                                Difference visualization will appear after compression.
+                            </p>
+
+                        </div>
+
+                        <div class="difference-legend">
+                            <span class="legend-indicator"></span>
+                            <span>Higher intensity indicates greater pixel difference.</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                    <!-- Image Comparison Section -->
+
+                <div class="comparison-section" id="comparisonSection">
+
+                    <div class="comparison-header">
+                        <h2>Image Comparison</h2>
+                        <p>Compare your original image with its reconstructed version.</p>
+                    </div>
+
+                    <div class="comparison-grid">
+
+                        <!-- Original Image -->
+
+                        <div class="comparison-card">
+
+                            <div class="comparison-card-header">
+                                <h3>Original Image</h3>
+                                <span class="image-badge original-badge">Original</span>
+                            </div>
+
+                            <div class="comparison-image-wrapper">
+                                <img id="originalComparisonImage" src="" alt="Original image">
+                            </div>
+
+                            <div class="comparison-info" id="originalComparisonInfo">
+                                Original image uploaded by the user
+                            </div>
+
+                        </div>
+
+
+                        <!-- Reconstructed Image -->
+
+                        <div class="comparison-card">
+
+                            <div class="comparison-card-header">
+                                <h3>Reconstructes Image</h3>
+                                <span class="image-badge reconstructed-badge">Preview</span>
+                            </div>
+
+                            <div class="comparison-image-wrapper">
+                                <img id="reconstructedImage" src="" alt="Reconstructed image">
+                            </div>
+
+                            <div class="comparison-info" id="reconstructedComparisonInfo">
+                                Reconstruction will appear here after compression
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="page" id="analysis">
+
+                <div class="page-header">
+                    <h1>Image Analysis</h1>
+                    <p>Explore the relationship between SVD rank, compression and image quality.</p>
+                </div>
+
+                <!-- Analysis overview cards -->
+                <div class="analysis-overview">
+
+                    <div class="analysis-card">
+                        <h3>Selected Rank</h3>
+                        <p class="analysis-value" id="analysisRank">--</p>
+                        <span>Current SVD rank</span>
+                    </div>
+
+                    <div class="analysis-card">
+                        <h3>Image Dimensions</h3>
+                        <p class="analysis-value" id="analysisDimensions">--</p>
+                        <span>Width × Height</span>
+                    </div>
+
+                    <div class="analysis-card">
+                        <h3>Maximum Rank</h3>
+                        <p class="analysis-value" id="analysisMaxRank">--</p>
+                        <span>Maximum possible rank for image</span>
+                    </div>
+
+                </div>
+
+                <!-- Graph area -->
+
+                <div class="analysis-graphs">
+
+                    <!-- Rank vs Image Quality -->
+                    <div class="analysis-graph-card">
+                        <h2>Rank vs. Image Quality</h2>
+                        <p>Understand how retaining more singular values affects reconstruction.</p>
+
+                        <div class="graph-placeholder quality-graph" id="qualityGraph">
+                            <div class="chart-y-label">PSNR (dB)</div>
+
+                            <div class="chart-area">
+                                <div class="chart-grid">
+                                    <div class="grid-line"></div>
+                                    <div class="grid-line"></div>
+                                    <div class="grid-line"></div>
+                                    <div class="grid-line"></div>
+                                    <div class="grid-line"></div>
+                                </div>
+
+                                <div class="chart-message" id="qualityChartMessage">
+                                    <p>Quality measurements will appear after compression.</p>
+                                </div>
+
+                                <canvas id="qualityCanvas"></canvas>
+                            </div>
+
+                            <div class="chart-x-label">Rank (k)</div>
+                        </div>
+                    </div>
+
+                    <!-- Singular Value Distribution -->
+                    <div class="analysis-graph-card singular-values-card">
+                        <h2>Singular Value Distribution</h2>
+                        <p>
+                            Observe how the magnitude of singular values decreases
+                            across successive components.
+                        </p>
+
+                        <div class="graph-placeholder singular-value-graph" id="singularValueGraph">
+                            <div class="singular-y-label">Singular Value Magnitude</div>
+
+                            <div class="singular-chart-area">
+                                <div class="singular-chart-grid">
+                                    <div class="singular-grid-line"></div>
+                                    <div class="singular-grid-line"></div>
+                                    <div class="singular-grid-line"></div>
+                                    <div class="singular-grid-line"></div>
+                                    <div class="singular-grid-line"></div>
+                                </div>
+
+                                <div class="singular-chart-message" id="singularChartMessage">
+                                    <p>Singular value data will appear after analysis.</p>
+                                </div>
+
+                                <canvas id="singularValueCanvas"></canvas>
+                            </div>
+
+                            <div class="singular-x-label">Component Index</div>
+                        </div>
+                    </div>
+
+                    <!-- Rank vs Compression -->
+                    <div class="analysis-graph-card">
+                        <h2>Rank vs. Compression</h2>
+                        <p>Explore the relationship between retained rank and compression.</p>
+
+                        <div class="graph-placeholder compression-graph" id="compressionGraph">
+                            <div class="compression-y-label">Compression Ratio</div>
+
+                            <div class="compression-chart-area">
+                                <div class="compression-chart-grid">
+                                    <div class="compression-grid-line"></div>
+                                    <div class="compression-grid-line"></div>
+                                    <div class="compression-grid-line"></div>
+                                    <div class="compression-grid-line"></div>
+                                    <div class="compression-grid-line"></div>
+                                </div>
+
+                                <div class="compression-chart-message" id="compressionChartMessage">
+                                    <p>Compression measurements will appear after processing.</p>
+                                </div>
+
+                                <canvas id="compressionCanvas"></canvas>
+                            </div>
+
+                            <div class="compression-x-label">Rank (k)</div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Mathematical insight -->
+                <div class="analysis-insight">
+
+                    <h2>Understanding SVD Compression</h2>
+
+                    <div class="svd-equation">
+                        A = UΣV<sup>T</sup>
+                    </div>
+
+                    <p>
+                        Singular Value Decomposition represents a matrix as three matrices.
+                        By retaining only the largest k singular values, we can construct
+                        an approximation of the original image while reducing the amount
+                        of information required to represent it.
+                    </p>
+
+                    <div class="rank-insight" id="rankInsight">
+                        Upload an image and adjust the rank to explore the relationship
+                        between compression and reconstruction quality.
+                    </div>
+
+                </div>
+
+            </section>           
+
+                <!-- Introduction Card -->
+                <div class="intro-card">
+
+                    <div class="intro-text">
+                        <span class="eyebrow">LINEAR ALGEBRA × IMAGE PROCESSING</span>
+
+                        <h2>Compress images.<br>Understand the mathematics.</h2>
+
+                        <p>
+                            Use Singular Value Decomposition to reduce image
+                            data while preserving its most important visual information.
+                        </p>
+
+                        <button class="primary-button">
+                            Start Compressing <span>→</span>
+                        </button>
+                    </div>
+
+                    <div class="intro-visual">
+                        <div class="visual-circle circle-one"></div>
+                        <div class="visual-circle circle-two"></div>
+                        <div class="visual-center">
+                            <span>U Σ Vᵀ</span>
+                            <small>MATRIX DECOMPOSITION</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Information Cards -->
+                <div class="section-heading">
+                    <h2>Overview</h2>
+                    <p>What you can explore in this workspace</p>
+                </div>
+
+                <div class="overview-grid">
+
+                    <div class="overview-card">
+                        <div class="card-icon blue-icon">▧</div>
+                        <h3>Image Compression</h3>
+                        <p>
+                            Reduce image representation using
+                            truncated singular values.
+                        </p>
+                    </div>
+
+                    <div class="overview-card">
+                        <div class="card-icon purple-icon">⌁</div>
+                        <h3>Reconstruction</h3>
+                        <p>
+                            Observe how an image is rebuilt
+                            using a reduced rank.
+                        </p>
+                    </div>
+
+                    <div class="overview-card">
+                        <div class="card-icon green-icon">◫</div>
+                        <h3>Quality Analysis</h3>
+                        <p>
+                            Evaluate compression using error
+                            and image quality metrics.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Bottom Section -->
+                <div class="bottom-grid">
+
+                    <div class="info-panel">
+                        <h3>How SVD Compression Works</h3>
+
+                        <p>
+                            An image can be represented as a matrix.
+                            SVD decomposes that matrix into three
+                            components, allowing us to approximate
+                            the original image using fewer singular values.
+                        </p>
+
+                        <div class="formula">
+                            A ≈ U<sub>k</sub> Σ<sub>k</sub> V<sub>k</sub><sup>T</sup>
+                        </div>
+                    </div>
+
+                    <div class="info-panel project-panel">
+                        <h3>Project Information</h3>
+
+                        <div class="project-info-row">
+                            <span>Algorithm</span>
+                            <strong>SVD</strong>
+                        </div>
+
+                        <div class="project-info-row">
+                            <span>Application</span>
+                            <strong>Image Compression</strong>
+                        </div>
+
+                        <div class="project-info-row">
+                            <span>Engine</span>
+                            <strong>Python / NumPy</strong>
+                        </div>
+
+                        <div class="project-info-row">
+                            <span>Interface</span>
+                            <strong>Web Application</strong>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>
